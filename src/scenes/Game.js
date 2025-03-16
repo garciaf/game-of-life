@@ -7,6 +7,7 @@ const enemySpawnRate = 500;
 export class Game extends Scene {
     cursors = null;
     pointer = null;
+    tile = null;
 
     constructor ()
     {
@@ -15,15 +16,33 @@ export class Game extends Scene {
 
     init() {
         this.score = 0;
+        this.tile = null;
         this.cameras.main.fadeIn(1000, 0, 0, 0);
     }
+        
 
     create (){
-        const background = this.add.image(0, 0, 'bg-hearth');
-        background.setOrigin(0, 0);
-        background.displayWidth = this.scale.width;
-        background.displayHeight = this.scale.height;
-        // Create a score text object at the top of the screen
+        this.tile = this.add.tileSprite(0, 0 , 0 , 0, 'bg-hearth');
+        this.scaleTileX = this.scale.displaySize.width / this.tile.width ;
+        this.scaleTileY = this.scale.displaySize.height/ this.tile.height;
+        
+        // this.tileClouds = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds');
+        this.tileCloudsTransparent = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds-transparent');
+
+        // this.tileClouds.setOrigin(0, 0);
+
+        this.tileCloudsTransparent.setOrigin(0, 0);
+
+        this.tile.scaleX = this.scaleTileX;
+        this.tile.scaleY = this.scaleTileY;
+        this.tile.setOrigin(0, 0);
+        var actualWidth = this.scale.width;
+        var actualHeight = this.scale.height;
+    
+        // Get the scale factors (scaling ratio)
+        var scaleX = this.scale.displayScaleX;
+        var scaleY = this.scale.displayScaleY;
+    
         this.scoreText = this.add.text(16, 16, 'Score: 0', {
         fontSize: '32px',
         fill: '#fff'
@@ -34,16 +53,20 @@ export class Game extends Scene {
         // drag the player
         
         this.pointer = this.input.activePointer;
-        this.enemies = this.physics.add.group();
+        this.enemies = this.physics.add.group({
+            maxSize: 100,
+            runChildUpdate: true
+        });
+
         this.time.addEvent({
             delay: enemySpawnRate,            // Time in milliseconds (5000 ms = 5 seconds)
             callback: () => {
                 // Generate random x and y coordinates within the game bounds   
                 const x = Math.Between(50, this.scale.width - 50);  // Random x within game width
-                const y = Math.Between(50, this.scale.height - 50); // Random y within game height
+                const y = 0; // Random y within game height
 
                 // Add the new enemy to the enemies group
-                this.enemies.add(new Enemy({scene: this, x: x, y: y})); 
+                this.enemies.add(new Enemy({scene: this, x: x, y: y, player: this.player})); 
                 
             },
             loop: true               // Keep repeating the event
@@ -74,8 +97,9 @@ export class Game extends Scene {
 
 
     update() {
-        // I want an anemy to spawn every 5 seconds
-
+        this.tile.tilePositionY -= 0.5;
+        // this.tileClouds.tilePositionY -= 1;
+        this.tileCloudsTransparent.tilePositionY -= 4;
         // This is called every frame
         if (this.cursors.up.isDown) {
             this.player.move('up');

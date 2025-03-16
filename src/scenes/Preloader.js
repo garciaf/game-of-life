@@ -35,10 +35,15 @@ export class Preloader extends Scene
 
         this.load.image('logo', 'logo.png');
         this.load.image('bg-hearth', 'desert-backgorund.png');
+        this.load.image('clouds', 'clouds.png');
+        this.load.image('clouds-transparent', 'clouds-transparent.png');
         this.load.svg('ship', 'ship.svg', { width: 64, height: 64 });
         this.load.spritesheet('spaceship', 'spaceship.png', { frameWidth: 24, frameHeight: 16 });
         this.load.spritesheet('blob', 'blob/D_Death.png', { frameWidth: 48, frameHeight: 48 });
         this.load.spritesheet('bullet', 'Bullet/laser-bolts.png', { frameWidth: 16, frameHeight: 16 });
+
+        this.load.spritesheet('enemy-big', 'enemy-big.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('explosion', 'explosion.png', { frameWidth: 16, frameHeight: 16 });
     }
 
     create ()

@@ -12,9 +12,11 @@ const config = {
     type: Phaser.AUTO,
     width: 1024,
     height: 768,
+    resolution: window.devicePixelRatio || 1,
     parent: 'game-container',
     backgroundColor: '#028af8',
     pixelArt: true,
+    roundPixels: false,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
@@ -23,7 +25,7 @@ const config = {
         default: "arcade",
         arcade: {
             gravity: { y: 0, x: 0 },
-            debug: false
+            debug: true
         }
     },
     scene: [
