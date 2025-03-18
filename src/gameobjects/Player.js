@@ -2,6 +2,7 @@ import { GameObjects, Physics } from "phaser";
 import { Bullet } from "./Bullet.js";
 
 const velocity = 300;
+const health = 100;
 
 export class Player extends Physics.Arcade.Sprite {
     bullets = null;
@@ -15,13 +16,13 @@ export class Player extends Physics.Arcade.Sprite {
         this.texture = 'player';
         this.setCollideWorldBounds(true);
         this.setBounce(0);
+        this.health = health;
         this.setDrag(100);
         this.bullets = this.scene.physics.add.group({
             classType: Bullet,
             maxSize: 100,
             runChildUpdate: true
         });
-        // this.setCircle(10, 5, 5);
         this.setScale(2);
         this.anims.create({
             key: 'idle',
@@ -34,7 +35,16 @@ export class Player extends Physics.Arcade.Sprite {
         this.rotation = Math.PI / 2;
     }
 
+    takeDamage(damage) {
+        this.health -= damage;
+        if (this.health <= 0) {
+            this.die();
+        }
+    }
 
+    die() {
+        this.scene.scene.start('GameOver');
+    }
 
     move(direction) {
         switch (direction) {

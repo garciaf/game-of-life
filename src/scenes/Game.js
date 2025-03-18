@@ -1,6 +1,7 @@
 import { Scene, Math } from 'phaser';
 import { Player } from '../gameobjects/Player.js';
 import { Enemy } from '../gameobjects/Enemy.js';
+import { SmallEnemy } from '../gameobjects/SmallEnemy.js';
 import { Bullet } from '../gameobjects/Bullet.js';
 
 const enemySpawnRate = 500;
@@ -8,6 +9,7 @@ export class Game extends Scene {
     cursors = null;
     pointer = null;
     tile = null;
+    player = null;
 
     constructor ()
     {
@@ -47,6 +49,11 @@ export class Game extends Scene {
         fontSize: '32px',
         fill: '#fff'
         });
+
+        this.healthText = this.add.text(16, 48, 'Health: 100', {
+            fontSize: '32px',
+            fill: '#fff'
+        });
         
         this.player = new Player({scene: this, x: 512, y: 384});
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -66,19 +73,31 @@ export class Game extends Scene {
                 const y = 0; // Random y within game height
 
                 // Add the new enemy to the enemies group
-                this.enemies.add(new Enemy({scene: this, x: x, y: y, player: this.player})); 
+                this.enemies.add(new Enemy(this, x,y)); 
                 
             },
             loop: true               // Keep repeating the event
         });
 
         this.physics.add.collider(this.player, this.enemies, (player, enemy) => { 
-            this.enemyDestroyed(enemy);
+            player.takeDamage(10);
+            enemy.die();
+            this.healthText.setText('Health: ' + this.player.health);
         });
 
         this.physics.add.overlap(this.player.bullets, this.enemies, (bullet, enemy) => {
-            this.enemyDestroyed(enemy);
+            enemy.takeDamage(bullet.damage);
+            
             bullet.destroy();
+        });
+
+        this.explosion = this.add.sprite(this.x, this.y, 'explosion')
+        this.explosion.setScale(this.scaleX, this.scaleY);
+        this.explosion.anims.create({
+            key: 'explode',
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 3 }),
+            frameRate: 20,
+            repeat: 0
         });
 
     }
@@ -93,6 +112,18 @@ export class Game extends Scene {
 
         // Destroy the enemy
         enemy.die();
+    }
+
+    enemyExploded(enemy) {
+        this.explosion.x = enemy.x;
+        this.explosion.y = enemy.y;
+        this.explosion.visible = true;
+        this.explosion.scaleX = enemy.scaleX;
+        this.explosion.scaleY = enemy.scaleY;
+        this.explosion.anims.play('explode').once('animationcomplete', () => {
+            this.explosion.visible = false;
+        }
+        );
     }
 
 

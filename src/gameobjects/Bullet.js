@@ -1,7 +1,7 @@
 import { Physics, Math } from "phaser";
 
 const speed = 1;
-
+const damage = 30;
 export class Bullet extends Physics.Arcade.Sprite 
 {   
     end_direction = new Math.Vector2(0, 0);
@@ -14,6 +14,7 @@ export class Bullet extends Physics.Arcade.Sprite
         this.scene.physics.add.existing(this);
         this.texture = 'bullet';
         this.name = "bullet";
+        this.damage = damage;
         this.setCollideWorldBounds(true);
         this.setBounce(0);
         this.setDrag(100);
