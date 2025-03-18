@@ -5,12 +5,14 @@ import { SmallEnemy } from '../gameobjects/SmallEnemy.js';
 import { Bullet } from '../gameobjects/Bullet.js';
 
 const enemySpawnRate = 500;
-export class Game extends Scene {
-    cursors = null;
-    pointer = null;
-    tile = null;
-    player = null;
+let cursors = null;
+let pointer = null;
+let gamepad = null;
+let music = null;
 
+
+export class Game extends Scene {
+    
     constructor ()
     {
         super('Game');
@@ -30,10 +32,14 @@ export class Game extends Scene {
         
         // this.tileClouds = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds');
         this.tileCloudsTransparent = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds-transparent');
-
-        // this.tileClouds.setOrigin(0, 0);
-
         this.tileCloudsTransparent.setOrigin(0, 0);
+
+        music = this.sound.add('backgroundMusic');
+        music.play({
+            loop: true,   // Set to true to loop the music
+            volume: 0.5
+        });
+
 
         this.tile.scaleX = this.scaleTileX;
         this.tile.scaleY = this.scaleTileY;
@@ -56,10 +62,19 @@ export class Game extends Scene {
         });
         
         this.player = new Player({scene: this, x: 512, y: 384});
-        this.cursors = this.input.keyboard.createCursorKeys();
+        
+        // Set controllers
+        cursors = this.input.keyboard.createCursorKeys();
+        console.log(this.input);
+        
+        // this.input.gamepad.once('connected', (pad) => {
+        //     gamepad = pad;  // Store the connected gamepad
+        //     console.log('Gamepad connected:', pad);
+        // });
+        pointer = this.input.activePointer;
+        
         // drag the player
         
-        this.pointer = this.input.activePointer;
         this.enemies = this.physics.add.group({
             maxSize: 100,
             runChildUpdate: true
@@ -102,6 +117,12 @@ export class Game extends Scene {
 
     }
 
+    destroy() {
+        if(music) {
+            music.stop();
+        }
+    }
+
     enemyDestroyed(enemy) {
         // Increment score
         this.enemies.remove(enemy);
@@ -129,35 +150,36 @@ export class Game extends Scene {
 
     update() {
         this.tile.tilePositionY -= 0.5;
-        // this.tileClouds.tilePositionY -= 1;
         this.tileCloudsTransparent.tilePositionY -= 4;
         // This is called every frame
-        if (this.cursors.up.isDown) {
+        if (cursors.up.isDown) {
             this.player.move('up');
         }
-        if (this.cursors.down.isDown) {
+        if (cursors.down.isDown) {
             this.player.move('down');
         }
-        if (this.cursors.left.isDown) {
+        if (cursors.left.isDown) {
             this.player.move('left');
         }
-        if (this.cursors.right.isDown) {
+        if (cursors.right.isDown) {
             this.player.move('right');
         }
 
-        if (this.pointer.isDown) {
-            this.player.lookAt(this.pointer.x, this.pointer.y);
+        if (pointer.isDown) {
+            this.player.lookAt(pointer.x, pointer.y);
         }
 
-        if (this.cursors.space.isDown) {
+        if (cursors.space.isDown) {
             this.player.accelerate();
         } else {
             this.player.decelerate();
         }
 
-        if (this.pointer.isDown) {
-            this.player.fire(this.pointer.x, this.pointer.y, this.pointer.x, this.pointer.y);
+        if (pointer.isDown) {
+            this.player.fire(pointer.x, pointer.y, pointer.x, pointer.y);
         }
+
+        // console.log(buttons)    
     }
 
-}
+}   

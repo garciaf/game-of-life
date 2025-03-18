@@ -46,6 +46,7 @@ export class Preloader extends Scene
         this.load.spritesheet('enemy-small', 'enemy-small.png', { frameWidth: 16, frameHeight: 16 });
         
         this.load.spritesheet('explosion', 'explosion.png', { frameWidth: 16, frameHeight: 16 });
+        this.load.audio('backgroundMusic', 'music/spaceship-shooter.mp3');
     }
 
     create ()

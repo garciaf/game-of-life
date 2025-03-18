@@ -44,6 +44,7 @@ export class Player extends Physics.Arcade.Sprite {
 
     die() {
         this.scene.scene.start('GameOver');
+        this.scene.destroy();
     }
 
     move(direction) {

@@ -9,7 +9,12 @@ export class MainMenu extends Scene
 
     create ()
     {
-        this.add.image(512, 384, 'background');
+        this.tile = this.add.tileSprite(0, 0 , 0 , 0, 'bg-hearth');
+        this.scaleTileX = this.scale.displaySize.width / this.tile.width ;
+        this.scaleTileY = this.scale.displaySize.height/ this.tile.height;
+        this.tile.scaleX = this.scaleTileX;
+        this.tile.scaleY = this.scaleTileY;
+        this.tile.setOrigin(0, 0);
 
         this.add.text(512, 300, 'GAME OF LIFE', {
             fontFamily: 'Arial Black', fontSize: 70, color: '#ffffff',
@@ -24,9 +29,7 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
 
         this.input.once('pointerdown', () => {
-
             this.scene.start('Game');
-
         });
     }
 }
