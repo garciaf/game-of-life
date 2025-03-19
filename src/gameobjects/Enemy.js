@@ -1,7 +1,10 @@
 import { Physics, Math } from "phaser";
+import { EventBus } from '../EventBus.js';
+const pointValue = 10;
+const speed = 3;
+const initialHealth = 100;
 
 export class Enemy extends Physics.Arcade.Sprite {
-    speed = 1;
     constructor(scene, x, y) {
         super(scene, x, y, 'enemy-big', 0);
         const randomeScale = Math.Between(1, 3);
@@ -18,7 +21,7 @@ export class Enemy extends Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
         this.setBounce(0);
         this.setDrag(100);
-        this.health = 100;
+        this.health = initialHealth;
 
         this.anims.create({
             key: 'idle',
@@ -26,9 +29,8 @@ export class Enemy extends Physics.Arcade.Sprite {
             frameRate: 10,
             repeat: -1
         });
+        
         this.anims.play('idle');
-        
-        
         this.explosion = this.scene.add.sprite(this.x, this.y, 'explosion')
         this.explosion.setScale(this.scaleX, this.scaleY);
         this.explosion.visible = false;
@@ -44,18 +46,13 @@ export class Enemy extends Physics.Arcade.Sprite {
     die() {
         this.scene.enemyExploded(this)
         this.destroy();
-        // this.visible = false;
-        // this.setActive(false);
-        // this.setCollideWorldBounds(false);
-        // this.explosion.x = this.x;
-        // this.explosion.y = this.y;
-        // this.explosion.visible = true;
-        // this.explosion.play('death').once('animationcomplete', () => {
-        //     this.destroy();
-        //     this.explosion.destroy();
-        // });
+        EventBus.emit('EnemyDied', this);
     }
 
+    pointValue() {
+        return pointValue;
+    }
+    
     shake() {
         this.scene.tweens.add({
             targets: this,
@@ -88,8 +85,8 @@ export class Enemy extends Physics.Arcade.Sprite {
     update(time, delta) {
         // Move towards the player
         this.end_direction = new Math.Vector2(this.player.x - this.x, this.player.y - this.y ).normalize();
-        this.x += 2 * this.end_direction.x;
-        this.y += 2 * this.end_direction.y;
+        this.x += speed * this.end_direction.x;
+        this.y += speed * this.end_direction.y;
         this.rotation = Math.Angle.Between(this.x, this.y, this.player.x, this.player.y);
     }
 

@@ -7,14 +7,30 @@ export class GameOver extends Scene
         super('GameOver');
     }
 
+    init(data) {
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
+        this.end_score = data.score || 0;
+    }
+
     create ()
     {
-        this.cameras.main.setBackgroundColor(0xff0000);
-
-        this.add.image(512, 384, 'background').setAlpha(0.5);
+        this.tile = this.add.tileSprite(0, 0 , 0 , 0, 'bg-hearth');
+        this.scaleTileX = this.scale.displaySize.width / this.tile.width ;
+        this.scaleTileY = this.scale.displaySize.height/ this.tile.height;
+        this.tile.tintTopLeft = 0xff0000;
+        this.tile.tintTopRight = 0x00ff00;
+        this.tile.scaleX = this.scaleTileX;
+        this.tile.scaleY = this.scaleTileY;
+        this.tile.setOrigin(0, 0);
 
         this.add.text(512, 384, 'Game Over', {
             fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 8,
+            align: 'center'
+        }).setOrigin(0.5);
+
+        this.add.text(512, 460, `Score: ${this.end_score}`, {
+            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5);

@@ -1,5 +1,6 @@
 import { GameObjects, Physics } from "phaser";
 import { Bullet } from "./Bullet.js";
+import { EventBus } from '../EventBus.js';
 
 const velocity = 300;
 const health = 100;
@@ -37,15 +38,34 @@ export class Player extends Physics.Arcade.Sprite {
 
     takeDamage(damage) {
         this.health -= damage;
+        this.shake();
+        EventBus.emit('PlayerTookDamage', damage);
+
         if (this.health <= 0) {
-            this.die();
+            EventBus.emit('PlayerDied');
         }
     }
 
-    die() {
-        this.scene.scene.start('GameOver');
-        this.scene.destroy();
+    shake() {
+        this.scene.tweens.add({
+            targets: this,
+            repeat: 2,
+            duration: 50,
+            x: this.x + Math.random() ,  // Shake effect
+            yoyo: true,
+            onRepeat: () => {
+                if (this.tintTopLeft === 0xffffff) {
+                    this.setTint(0xff0000);
+                } else {
+                    this.clearTint();
+                }
+            },
+            onComplete: () => {
+                this.clearTint();
+            }   
+        });
     }
+
 
     move(direction) {
         switch (direction) {
