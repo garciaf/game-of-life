@@ -37,12 +37,6 @@ export class Game extends Scene {
         this.tileCloudsTransparent = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds-transparent');
         this.tileCloudsTransparent.setOrigin(0, 0);
 
-        music = this.sound.add('backgroundMusic');
-        music.play({
-            loop: true,   // Set to true to loop the music
-            volume: 0.5
-        });
-        
         var actualWidth = this.scale.width;
         var actualHeight = this.scale.height;
     
@@ -111,19 +105,12 @@ export class Game extends Scene {
 
         EventBus.on('PlayerDied', () => {
             this.scene.start('GameOver', { score: this.score });
-            this.destroy();
         });
 
         EventBus.on('EnemyDied', (enemy) => {
             this.score += enemy.pointValue();   
             this.scoreText.setText('Score: ' + this.score);
         });
-    }
-
-    destroy() {
-        if(music) {
-            music.stop();
-        }
     }
 
     enemyExploded(enemy) {
