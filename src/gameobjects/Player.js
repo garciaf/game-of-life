@@ -7,7 +7,7 @@ const health = 100;
 
 export class Player extends Physics.Arcade.Sprite {
     bullets = null;
-    
+
     constructor({ scene, x, y}) {
         super(scene, x, y, 'spaceship');
         scene.add.existing(this);
@@ -62,7 +62,7 @@ export class Player extends Physics.Arcade.Sprite {
             },
             onComplete: () => {
                 this.clearTint();
-            }   
+            }
         });
     }
 
@@ -100,10 +100,10 @@ export class Player extends Physics.Arcade.Sprite {
 
             const dx = window.Math.cos(rad);
             const dy = window.Math.sin(rad);
-            const end_direction = new Math.Vector2(dx, dy).normalize();
-            console.log(end_direction);
+            const targetX = this.x + dx * 1000;
+            const targetY = this.y + dy * 1000;
 
-            bullet.fire({ x: this.x, y: this.y, targetX: end_direction.x, targetY: end_direction.y});
+            bullet.fire({ x: this.x, y: this.y, targetX: targetX, targetY: targetY});
         }
     }
 
