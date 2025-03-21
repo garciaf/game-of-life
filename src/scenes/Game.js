@@ -11,6 +11,7 @@ let pointer = null;
 let gamepad = null;
 let music = null;
 const backgroundSpeed = 2;
+let fKey = null;
 
 export class Game extends Scene {
     
@@ -58,13 +59,17 @@ export class Game extends Scene {
         
         // Set controllers
         cursors = this.input.keyboard.createCursorKeys();
+        fKey = this.input.keyboard.addKey('F');
+        console.log(fKey);
+        console.log(cursors);
         
         pointer = this.input.activePointer;
         
         // drag the player
         
         this.enemies = this.physics.add.group({
-            maxSize: 100,
+            classType: Enemy,
+            maxSize: 500,
             runChildUpdate: true
         });
 
@@ -74,7 +79,7 @@ export class Game extends Scene {
                 const x = Math.Between(50, this.scale.width - 50);  // Random x within game width
                 const y = 0; // Random y within game height
                 // Add the new enemy to the enemies group
-                this.enemies.add(new Enemy(this, x,y)); 
+                this.enemies.get(x, y);
                 
             },
             loop: true               // Keep repeating the event
@@ -151,6 +156,12 @@ export class Game extends Scene {
             this.player.accelerate();
         } else {
             this.player.decelerate();
+        }
+
+        if (fKey.isDown) {
+            let rad = Math.DegToRad(this.player.angle);
+
+            this.player.fireFromPlayer();
         }
 
         if (pointer.isDown) {

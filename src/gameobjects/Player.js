@@ -1,4 +1,4 @@
-import { GameObjects, Physics } from "phaser";
+import { GameObjects, Physics, Math } from "phaser";
 import { Bullet } from "./Bullet.js";
 import { EventBus } from '../EventBus.js';
 
@@ -7,7 +7,7 @@ const health = 100;
 
 export class Player extends Physics.Arcade.Sprite {
     bullets = null;
-    
+
     constructor({ scene, x, y}) {
         super(scene, x, y, 'spaceship');
         scene.add.existing(this);
@@ -51,7 +51,7 @@ export class Player extends Physics.Arcade.Sprite {
             targets: this,
             repeat: 2,
             duration: 50,
-            x: this.x + Math.random() ,  // Shake effect
+            x: this.x + window.Math.random() ,  // Shake effect
             yoyo: true,
             onRepeat: () => {
                 if (this.tintTopLeft === 0xffffff) {
@@ -62,7 +62,7 @@ export class Player extends Physics.Arcade.Sprite {
             },
             onComplete: () => {
                 this.clearTint();
-            }   
+            }
         });
     }
 
@@ -89,12 +89,26 @@ export class Player extends Physics.Arcade.Sprite {
     fire(x, y, pointerX, pointerY) {
         const bullet = this.bullets.get();
         if (bullet) {
-            bullet.fire(this.x, this.y, pointerX, pointerY);
+            bullet.fire({ x: this.x, y: this.y, targetX: pointerX, targetY: pointerY});
+        }
+    }
+
+    fireFromPlayer() {
+        const bullet = this.bullets.get();
+        if (bullet) {
+            const rad = Math.DegToRad(this.angle);
+
+            const dx = window.Math.cos(rad);
+            const dy = window.Math.sin(rad);
+            const targetX = this.x + dx * 1000;
+            const targetY = this.y + dy * 1000;
+
+            bullet.fire({ x: this.x, y: this.y, targetX: targetX, targetY: targetY});
         }
     }
 
     lookAt(x, y) {
-        this.rotation = Math.atan2(y - this.y, x - this.x);
+        this.rotation = window.Math.atan2(y - this.y, x - this.x);
     }
 
     accelerate() {
