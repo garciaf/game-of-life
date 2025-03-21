@@ -30,12 +30,12 @@ export class Bullet extends Physics.Arcade.Sprite
         this.anims.play('idle-bullet');
     }
 
-    fire(x, y, pointerX, pointerY ) 
+    fire({ x, y, targetX, targetY, angle }) 
     {
         this.x = x;
         this.y = y;
+        this.end_direction = new Math.Vector2(targetX - x, targetY - y ).normalize();
         // Calculate direction towards target
-        this.end_direction = new Math.Vector2(pointerX - x, pointerY - y ).normalize();
         
     }
 
