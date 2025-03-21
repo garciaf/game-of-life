@@ -12,9 +12,10 @@ let gamepad = null;
 let music = null;
 const backgroundSpeed = 2;
 let fKey = null;
+let pauseKey = null;
 
 export class Game extends Scene {
-    
+
     constructor ()
     {
         super('Game');
@@ -25,7 +26,7 @@ export class Game extends Scene {
         this.tile = null;
         this.cameras.main.fadeIn(1000, 0, 0, 0);
     }
-        
+
 
     create (){
         this.tile = this.add.tileSprite(0, 0 , 0 , 0, 'bg-hearth');
@@ -40,11 +41,11 @@ export class Game extends Scene {
 
         var actualWidth = this.scale.width;
         var actualHeight = this.scale.height;
-    
+
         // Get the scale factors (scaling ratio)
         var scaleX = this.scale.displayScaleX;
         var scaleY = this.scale.displayScaleY;
-    
+
         this.scoreText = this.add.text(16, 16, 'Score: 0', {
         fontSize: '32px',
         fill: '#fff'
@@ -54,19 +55,17 @@ export class Game extends Scene {
             fontSize: '32px',
             fill: '#fff'
         });
-        
+
         this.player = new Player({scene: this, x: 512, y: 384});
-        
+
         // Set controllers
         cursors = this.input.keyboard.createCursorKeys();
         fKey = this.input.keyboard.addKey('F');
-        console.log(fKey);
-        console.log(cursors);
-        
+        pauseKey = this.input.keyboard.addKey('ESC');
         pointer = this.input.activePointer;
-        
+
         // drag the player
-        
+
         this.enemies = this.physics.add.group({
             classType: Enemy,
             maxSize: 500,
@@ -80,12 +79,12 @@ export class Game extends Scene {
                 const y = 0; // Random y within game height
                 // Add the new enemy to the enemies group
                 this.enemies.get(x, y);
-                
+
             },
             loop: true               // Keep repeating the event
         });
 
-        this.physics.add.collider(this.player, this.enemies, (player, enemy) => { 
+        this.physics.add.collider(this.player, this.enemies, (player, enemy) => {
             player.takeDamage(10);
             enemy.die();
         });
@@ -113,7 +112,7 @@ export class Game extends Scene {
         });
 
         EventBus.on('EnemyDied', (enemy) => {
-            this.score += enemy.pointValue();   
+            this.score += enemy.pointValue();
             this.scoreText.setText('Score: ' + this.score);
         });
     }
@@ -135,6 +134,10 @@ export class Game extends Scene {
         this.tile.tilePositionY -= backgroundSpeed;
         this.tileCloudsTransparent.tilePositionY -= backgroundSpeed * 8;
         // This is called every frame
+        if (pauseKey.isDown) {
+            this.scene.launch('Pause');
+            this.scene.pause();
+        }
         if (cursors.up.isDown) {
             this.player.move('up');
         }
@@ -170,4 +173,4 @@ export class Game extends Scene {
 
     }
 
-}   
+}

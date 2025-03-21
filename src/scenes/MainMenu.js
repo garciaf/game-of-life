@@ -22,7 +22,7 @@ export class MainMenu extends Scene
             align: 'center'
         }).setOrigin(0.5);
 
-        this.add.text(512, 460, 'Destroy everything on screen', {
+        this.add.text(512, 460, 'click to start', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
