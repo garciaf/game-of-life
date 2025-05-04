@@ -36,7 +36,7 @@ export class Game extends Scene {
         this.tile.scaleY = this.scaleTileY;
         this.tile.setOrigin(0, 0);
         // this.tileClouds = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds');
-        this.tileCloudsTransparent = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds-transparent');
+        this.tileCloudsTransparent = this.add.tileSprite(0, 0 , this.scale.width , this.scale.height, 'clouds-transparent');
         this.tileCloudsTransparent.setOrigin(0, 0);
 
         var actualWidth = this.scale.width;
