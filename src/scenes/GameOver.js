@@ -15,8 +15,8 @@ export class GameOver extends Scene
     create ()
     {
         this.tile = this.add.tileSprite(0, 0 , 0 , 0, 'bg-hearth');
-        this.scaleTileX = this.scale.displaySize.width / this.tile.width ;
-        this.scaleTileY = this.scale.displaySize.height/ this.tile.height;
+        this.scaleTileX = this.scale.width / this.tile.width ;
+        this.scaleTileY = this.scale.height/ this.tile.height;
         this.tile.tintTopLeft = 0xff0000;
         this.tile.tintTopRight = 0x00ff00;
         this.tile.scaleX = this.scaleTileX;
