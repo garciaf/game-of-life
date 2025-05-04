@@ -108,6 +108,7 @@ export class Game extends Scene {
         })
 
         EventBus.on('PlayerDied', () => {
+            music.stop();
             this.scene.start('GameOver', { score: this.score });
         });
 
@@ -115,6 +116,13 @@ export class Game extends Scene {
             this.score += enemy.pointValue();
             this.scoreText.setText('Score: ' + this.score);
         });
+
+        const music = this.sound.add('bg-music', {
+            loop: true,
+            volume: 0.5,
+          });
+
+        music.play();
     }
 
     enemyExploded(enemy) {
