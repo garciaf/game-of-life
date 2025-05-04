@@ -30,14 +30,17 @@ export class Game extends Scene {
 
     create (){
         this.tile = this.add.tileSprite(0, 0 , 0 , 0, 'bg-hearth');
-        this.scaleTileX = this.scale.width / this.tile.width ;
-        this.scaleTileY = this.scale.height/ this.tile.height;
-        this.tile.scaleX = this.scaleTileX;
-        this.tile.scaleY = this.scaleTileY;
+        const scaleTileX = this.scale.width / this.tile.width ;
+        const scaleTileY = this.scale.height/ this.tile.height;
+        this.tile.scaleX = scaleTileX;
+        this.tile.scaleY = scaleTileY;
         this.tile.setOrigin(0, 0);
+        
         this.tileCloudsTransparent = this.add.tileSprite(0, 0 , this.scale.width , this.scale.height, 'clouds-transparent');
-        this.tileCloudsTransparent.scaleX = this.scaleTileX;
-        this.tileCloudsTransparent.scaleY = this.scaleTileY;
+        const scaleCloudsX = this.scale.width / this.tileCloudsTransparent.width ;
+        const scaleCloudsY = this.scale.height/ this.tileCloudsTransparent.height;
+        this.tileCloudsTransparent.scaleX = scaleCloudsX;
+        this.tileCloudsTransparent.scaleY = scaleCloudsY;
         this.tileCloudsTransparent.setOrigin(0, 0);
 
         var actualWidth = this.scale.width;
