@@ -35,8 +35,9 @@ export class Game extends Scene {
         this.tile.scaleX = this.scaleTileX;
         this.tile.scaleY = this.scaleTileY;
         this.tile.setOrigin(0, 0);
-        // this.tileClouds = this.add.tileSprite(0, 0 , this.scale.displaySize.width , this.scale.displaySize.height, 'clouds');
         this.tileCloudsTransparent = this.add.tileSprite(0, 0 , this.scale.width , this.scale.height, 'clouds-transparent');
+        this.tileCloudsTransparent.scaleX = this.scaleTileX;
+        this.tileCloudsTransparent.scaleY = this.scaleTileY;
         this.tileCloudsTransparent.setOrigin(0, 0);
 
         var actualWidth = this.scale.width;
@@ -77,7 +78,6 @@ export class Game extends Scene {
             callback: () => {
                 const x = Math.Between(50, this.scale.width - 50);  // Random x within game width
                 const y = 0; // Random y within game height
-                // Add the new enemy to the enemies group
                 this.enemies.get(x, y);
 
             },
@@ -178,7 +178,5 @@ export class Game extends Scene {
         if (pointer.isDown) {
             this.player.fire(pointer.x, pointer.y, pointer.x, pointer.y);
         }
-
     }
-
 }
