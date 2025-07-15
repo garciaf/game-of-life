@@ -3,9 +3,12 @@
 Game of life is a shooter where the goal is to survive the longest time possible
 
 ## Preview
+| ![Game Screenshot 1](docs/image-1.png) | ![Game Screenshot 2](docs/image-2.png) |
+| --- | --- |
 
-![Game Screenshot 1](docs/image-1.png)
-![Game Screenshot 2](docs/image-2.png)
+
+
+
 
 ### Gameplay Video
 
