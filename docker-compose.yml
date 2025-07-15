@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  game-of-life:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:80"
+    container_name: phaser-game-of-life
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    # volumes:
+      # Optional: mount assets for development (uncomment if needed)
+      # - ./assets:/usr/share/nginx/html/assets:ro
+      # - ./src:/usr/share/nginx/html/src:ro
+    networks:
+      - game-network
+
+  # Optional: Development service using alive-server
+  game-of-life-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "9001:3000"
+    container_name: phaser-game-of-life-dev
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app:cached
+      - /app/node_modules
+    networks:
+      - game-network
+    profiles:
+      - dev
+
+networks:
+  game-network:
+    driver: bridge

@@ -1,20 +1,17 @@
-# Phaser Importmap Template
+# Game of life
 
-This is a Phaser 3 project template that uses [importmap](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap).
+Game of life is a shooter where the goal is to survive the longest time possible
 
-An import map is a JSON object that allows developers to control how the browser resolves module specifiers when importing JavaScript modules. It provides a mapping between the text used as the module specifier in an import statement or import() operator, and the corresponding value that will replace the text when resolving the specifier. The JSON object must conform to the Import map JSON representation format.
+## Preview
 
-An import map is used to resolve module specifiers in static and dynamic imports, and therefore must be declared and processed before any `<script>` elements that `import` modules using specifiers declared in the map.
+![Game Screenshot 1](docs/image-1.png.png)
+![Game Screenshot 2](docs/image-2.png.png)
 
-importmap a baseline 2023 feature. Please [see MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) for details about browser compatibility.
+### Gameplay Video
 
-### Versions
-
-This template has been updated for:
-
-- [Phaser 3.88.0](https://github.com/phaserjs/phaser)
-
-![screenshot](screenshot.png)
+<video src="docs/gameplay.mp4" controls width="600">
+  Your browser does not support the video tag.
+</video>
 
 ## Requirements
 
@@ -26,6 +23,8 @@ This template has been updated for:
 |---------|-------------|
 | `npm install` | Install project dependencies |
 | `npm run dev` | Launch a development web server |
+| `docker-compose up` | Run the game in production mode using Docker |
+| `docker-compose --profile dev up game-of-life-dev` | Run the game in development mode using Docker |
 
 ## Writing Code
 
@@ -38,7 +37,7 @@ The local development server runs on `http://localhost:3000` by default.
 - You **MUST** use the `phaser.esm` build of Phaser. This is the only build that exports ES Modules that importmap supports.
 - Phaser v3.60.0 was the first version to export an ESM bundle. You cannot use earlier versions with this template.
 - The 'name' you give in the importmap (in your `index.html`) should match exactly that used in the `import` declarations within your game code.
-- You can store the Phaser ESM build locally if you'd rather not use the CDN. Simply put the `phaser.esm.js` in your local folder structure and reference that inside your HTML like this: 
+- You can store the Phaser ESM build locally if you'd rather not use the CDN. Simply put the `phaser.esm.js` in your local folder structure and reference that inside your HTML like this:
 
 ```js
 {
@@ -63,21 +62,65 @@ We have provided a default project structure to get you started. This is as foll
 
 In order to deploy your game, you will need to upload *all* the content of the folder to a public-facing web server.
 
-## Join the Phaser Community!
+## Running with Docker
 
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show off your work 😄
+This project includes Docker support for easy deployment and development. You can run the game using Docker Compose without needing to install Node.js locally.
 
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
+### Requirements
 
-Tell us about your game in [games@phaser.io](mailto:games@phaser.io)!
+- [Docker](https://www.docker.com/get-started) installed on your system
+- [Docker Compose](https://docs.docker.com/compose/install/) (usually included with Docker Desktop)
 
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels, and love.
+### Production Mode
 
-The Phaser logo and characters are &copy; 2011 - 2024 Phaser Studio Inc.
+To run the game in production mode with nginx:
 
-All rights reserved.
+```bash
+docker-compose up
+```
+
+This will:
+- Build the production Docker image
+- Serve the game using nginx on `http://localhost:9000`
+- Optimize assets with gzip compression and proper caching headers
+
+### Development Mode
+
+To run the game in development mode with hot reloading:
+
+```bash
+docker-compose --profile dev up game-of-life-dev
+```
+
+This will:
+- Build the development Docker image
+- Use alive-server for hot reloading on `http://localhost:9001`
+- Mount your local code for real-time changes
+
+### Running Both Services
+
+You can run both production and development services simultaneously:
+
+```bash
+docker-compose --profile dev up
+```
+
+- Production: `http://localhost:9000`
+- Development: `http://localhost:9001`
+
+### Stopping Services
+
+To stop the running containers:
+
+```bash
+docker-compose down
+```
+
+### Rebuilding Images
+
+If you make changes to the Dockerfile or dependencies, rebuild the images:
+
+```bash
+docker-compose build
+```
+
