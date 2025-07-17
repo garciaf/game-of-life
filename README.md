@@ -6,21 +6,9 @@ Game of life is a shooter where the goal is to survive the longest time possible
 | ![Game Screenshot 1](docs/image-1.png) | ![Game Screenshot 2](docs/image-2.png) |
 | --- | --- |
 
-
-
-
-
 ### Gameplay Video
 
-
-
 https://github.com/user-attachments/assets/c904c9b8-75d0-44b5-8c91-e78e5fd28802
-
-
-
-## Requirements
-
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm` (if you want to use the development server).
 
 ## Available Commands
 
@@ -30,6 +18,10 @@ https://github.com/user-attachments/assets/c904c9b8-75d0-44b5-8c91-e78e5fd28802
 | `npm run dev` | Launch a development web server |
 | `docker-compose up` | Run the game in production mode using Docker |
 | `docker-compose --profile dev up game-of-life-dev` | Run the game in development mode using Docker |
+
+## Requirements
+
+[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm` (if you want to use the development server).
 
 ## Writing Code
 
